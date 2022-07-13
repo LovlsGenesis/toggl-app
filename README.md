@@ -27,10 +27,15 @@
 API that allows you to set time entries in Toggl Tracker in a fastest way.
 
 /account/token/:token
+
 /toggl/workspaces
+
 /toggl/projects
+
 /toggl/days
+
 /toggl/time-entries
+
 /toggl/time-entries
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
