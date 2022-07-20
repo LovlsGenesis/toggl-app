@@ -21,6 +21,10 @@ export interface IProject {
 @Injectable()
 export class TogglService {
   async workspaces(): Promise<void> {
+    if (!global.token) {
+      throw new ForbiddenException('Please set your API Token');
+    }
+
     const token = Buffer.from(`${global.token}:api_token`).toString('base64');
     const { data } = await api.get(`/v9/workspaces`, {
       headers: {
