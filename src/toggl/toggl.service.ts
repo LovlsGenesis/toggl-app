@@ -57,12 +57,12 @@ export class TogglService {
     }));
   }
 
-  selectDays({ beginning, end }: selectDaysEntryDTO) {
-    if (!beginning || !end) {
-      throw new NotFoundException('Beginning || End missing');
+  selectDays({ beginDate, endDate, beginHour, endHour }: selectDaysEntryDTO) {
+    if (!beginDate || !endDate) {
+      throw new NotFoundException('BeginDate || EndDate missing');
     }
-    const [beginDay, beginMonth, beginYear] = beginning.split('/');
-    const [endDay, endMonth, endYear] = end.split('/');
+    const [beginDay, beginMonth, beginYear] = beginDate.split('/');
+    const [endDay, endMonth, endYear] = endDate.split('/');
     const dateArray = [];
     for (let month = +beginMonth; month <= +endMonth; month++) {
       for (let day = +beginDay; day <= +endDay; day++) {
@@ -73,16 +73,17 @@ export class TogglService {
         }
       }
     }
-    return { dates: dateArray };
+
+    return this.setTimeEntries(beginHour, endHour, dateArray);
   }
 
-  setTimeEntries({ beginning, end, dates }: selectDaysEntryDTO): IDate[] {
-    if (!beginning || !end) {
-      throw new NotFoundException('Beginning || End missing');
+  setTimeEntries(beginHour, endHour, dates): IDate[] {
+    if (!beginHour || !endHour) {
+      throw new NotFoundException('BeginHour || EndHour missing');
     }
 
-    const startHour = +beginning;
-    const endHour = +end;
+    const start = +beginHour;
+    const end = +endHour;
 
     if (dates.length == 0) {
       throw new NotFoundException('Dates params is empty');
@@ -91,12 +92,12 @@ export class TogglService {
     const timeEntries: IDate[] = [];
     dates.forEach((date) => {
       const dateValue = new Date(date);
-      const begin = new Date(dateValue.setHours(startHour, 0, 0));
-      const end = new Date(dateValue.setHours(endHour, 0, 0));
+      const beginDate = new Date(dateValue.setHours(start, 0, 0));
+      const endDate = new Date(dateValue.setHours(end, 0, 0));
       const newDate = {
         label: dateValue.toLocaleDateString('pt-BR'),
-        begin,
-        end,
+        begin: beginDate,
+        end: endDate,
       };
       timeEntries.push(newDate);
     });

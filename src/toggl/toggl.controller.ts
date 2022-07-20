@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { TogglService, IDate } from './toggl.service';
 
 export interface selectDaysEntryDTO {
-  beginning: string;
-  end: string;
-  dates?: string[];
+  beginDate: string;
+  endDate: string;
+  beginHour: string;
+  endHour: string;
 }
 
 export interface timeEntriesDTO {
@@ -37,14 +38,6 @@ export class TogglController {
     selectDaysEntryDTO: selectDaysEntryDTO,
   ) {
     return this.togglService.selectDays(selectDaysEntryDTO);
-  }
-
-  @Get('time-entries')
-  async setTimeEntries(
-    @Body()
-    selectDaysEntryDTO: selectDaysEntryDTO,
-  ): Promise<IDate[]> {
-    return this.togglService.setTimeEntries(selectDaysEntryDTO);
   }
 
   @Post('time-entries')
