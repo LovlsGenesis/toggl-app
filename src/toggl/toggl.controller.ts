@@ -24,7 +24,7 @@ export class TogglController {
     return this.togglService.workspaces();
   }
 
-  @Get('projects')
+  @Post('projects')
   async projects(
     @Body('wid')
     wid: number,
