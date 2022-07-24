@@ -146,6 +146,7 @@ export class TogglService {
       } catch (error) {
         throw new ForbiddenException(error.message);
       }
+      return;
     });
     return apiResponses;
   }
