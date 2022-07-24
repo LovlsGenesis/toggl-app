@@ -61,8 +61,8 @@ export class TogglService {
     if (!beginDate || !endDate) {
       throw new NotFoundException('BeginDate || EndDate missing');
     }
-    const [beginDay, beginMonth, beginYear] = beginDate.split('/');
-    const [endDay, endMonth, endYear] = endDate.split('/');
+    const [beginYear, beginMonth, beginDay] = beginDate.split('-');
+    const [endYear, endMonth, endDay] = endDate.split('-');
     const dateArray = [];
     for (let month = +beginMonth; month <= +endMonth; month++) {
       for (let day = +beginDay; day <= +endDay; day++) {
@@ -81,9 +81,8 @@ export class TogglService {
     if (!beginHour || !endHour) {
       throw new NotFoundException('BeginHour || EndHour missing');
     }
-
-    const start = +beginHour;
-    const end = +endHour;
+    const start = beginHour.split(':')[0];
+    const end = endHour.split(':')[0];
 
     if (dates.length == 0) {
       throw new NotFoundException('Dates params is empty');
@@ -92,8 +91,8 @@ export class TogglService {
     const timeEntries: IDate[] = [];
     dates.forEach((date) => {
       const dateValue = new Date(date);
-      const beginDate = new Date(dateValue.setHours(start, 0, 0));
-      const endDate = new Date(dateValue.setHours(end, 0, 0));
+      const beginDate = new Date(dateValue.setHours(start, 0));
+      const endDate = new Date(dateValue.setHours(end, 0));
       const newDate = {
         label: dateValue.toLocaleDateString('pt-BR'),
         begin: beginDate,
