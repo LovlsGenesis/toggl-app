@@ -73,7 +73,7 @@ export class TogglService {
         }
       }
     }
-
+    console.log(dateArray);
     return this.setTimeEntries(beginHour, endHour, dateArray);
   }
 
@@ -141,8 +141,8 @@ export class TogglService {
         );
         apiResponses.push(data);
         setTimeout(() => {
-          console.log('Waiting 5s');
-        }, 5000);
+          console.log('Waiting 10s');
+        }, 10000);
       } catch (error) {
         throw new ForbiddenException(error.message);
       }
