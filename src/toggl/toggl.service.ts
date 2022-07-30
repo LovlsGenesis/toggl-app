@@ -73,7 +73,6 @@ export class TogglService {
         }
       }
     }
-    console.log(dateArray);
     return this.setTimeEntries(beginHour, endHour, dateArray);
   }
 
@@ -114,7 +113,15 @@ export class TogglService {
     }
     const apiResponses = [];
     const token = Buffer.from(`${global.token}:api_token`).toString('base64');
-    timeEntries.forEach(async (timeEntry) => {
+    let index = 0;
+    const interval = setInterval(async () => {
+      console.log(index === timeEntries.length);
+      if (index === timeEntries.length) {
+        clearInterval(interval);
+        console.log('FINISHED');
+        return;
+      }
+      const timeEntry = timeEntries[index];
       const duration =
         (new Date(timeEntry.end).getHours() -
           new Date(timeEntry.begin).getHours()) *
@@ -140,14 +147,15 @@ export class TogglService {
           },
         );
         apiResponses.push(data);
-        setTimeout(() => {
-          console.log('Waiting 10s');
-        }, 10000);
       } catch (error) {
-        throw new ForbiddenException(error.message);
+        clearInterval(interval);
+        console.log(error.response.data);
+        throw new ForbiddenException(
+          `${error.message} - ${error.response.data}`,
+        );
       }
-      return;
-    });
+      index++;
+    }, 5000);
     return apiResponses;
   }
 }
